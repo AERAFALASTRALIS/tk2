@@ -1,0 +1,93 @@
+#!/bin/bash
+echo -e -n "##
+## EPITECH PROJECT, 2020
+## $(get_highest_level $PWD)
+## File description:
+## Makefile
+##
+
+NAME = $1
+
+FILES = " > "Makefile"
+tree -i -f "." | cat | grep "\.cpp$" | grep -v "bonus/"| grep -v "tests/"| sed -z "s/\n/ @£/g" | sed "s/ @£$//g" | tr "@" "\\" | sed -z "s/£/\n	/g" | sed "s/\.\///g" >> "Makefile"
+echo -e -n "
+
+TESTS = " >> "Makefile"
+tree -i -f "tests/" | cat | grep "\.cpp$" | grep -v "bonus/"| sed -z "s/\n/ @£/g" | sed "s/ @£$//g" | tr "@" "\\" | sed -z "s/£/\n	/g" | sed "s/\.\///g" >> "Makefile"
+echo -e -n "
+
+TESTS_TARGET = " >> "Makefile"
+tree -i -f "." | cat | grep "\.cpp$" | grep -v "bonus/"| grep -v "tests/"| grep -v "/main.c"| sed -z "s/\n/ @£/g" | sed "s/ @£$//g" | tr "@" "\\" | sed -z "s/£/\n	/g" | sed "s/\.\///g" >> "Makefile"
+echo -e "
+
+OBJ = \$(FILES:.cpp=.o)
+
+INCLUDES = $(tree -if '.' | grep "include$" | grep -v "bonus" | sed "s/\.\//-I /g" | tr "\n" " ")
+
+CPPFLAGS = $2
+CC = g++
+BINFLAGS = $3
+
+all:	\$(NAME)
+
+\$(NAME): \$(OBJ)
+	\$(CC) -Wall -Wextra -o \$(NAME) \$(OBJ) \$(BINFLAGS) \$(INCLUDES)
+
+single:
+	clear && make -j8 && make clean
+
+fast:
+	\$(CC) -Ofast -o \$(NAME) \$(FILES) \$(CPPFLAGS) \$(BINFLAGS) \$(INCLUDES)
+
+clean:
+	rm -f \$(OBJ)
+	rm -f *# *~ ./*/*# ./*/*~ ./*/*/*# ./*/*/*~ vgcore*
+
+fclean:	clean
+	rm -f \$(NAME)
+
+full:	update
+	make re
+
+fulld:	update
+	make debug
+
+re:	fclean all
+
+prepush:	fclean
+	git add --all
+	git status
+
+tree:	prepush
+	tree -a -I .git
+
+push:	prepush
+	git commit -m 'auto-sync with master'
+	git push origin master
+
+pull:
+	git pull origin master
+
+sync:	pull	push
+
+debug:
+	clear
+	\$(CC) -g3 -o \$(NAME) \$(FILES) -Wall -Wextra \$(CPPFLAGS) \$(BINFLAGS) \$(INCLUDES)
+
+valgrind:
+	clear
+	\$(CC) -g3 -o \$(NAME) \$(FILES) \$(CPPFLAGS) \$(BINFLAGS) \$(INCLUDES)
+
+tests_run:
+	\$(CC) -o unit_tests \$(TESTS_TARGET) \$(TESTS) \$(CPPFLAGS) \$(BINFLAGS) \$(INCLUDES) --coverage -lcriterion
+	./unit_tests
+
+coverage:
+	clear
+	make tests_run
+	gcovr --exclude tests/
+	gcovr --exclude tests/ --branches
+
+update:
+	./mmkfile \"\$(NAME)\" \"\$(CPPFLAGS)\" \"\$(BINFLAGS)\"" >> Makefile
+echo "Makefile created"
