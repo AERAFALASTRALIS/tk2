@@ -1,0 +1,152 @@
+#!/usr/bin/env python3
+
+import sys
+from math import *
+
+dieList = list()
+
+def binomiale(a, b):
+    res = (factorial(a) / (factorial(b) * factorial(a - b))) * pow(1 / 6, b) * pow(5 / 6, a - b)
+    return (res)
+
+def calcProbabilite(c, nb):
+    res = 0
+    NbOccurence = dieList.count(int(nb))
+    if NbOccurence >= c:
+        res = 1
+    else:
+        for x in range(c - NbOccurence, 5 - NbOccurence + 1):
+            res += binomiale(5 - NbOccurence, x)
+    return res
+
+def calcFullHouse(nb, nb2):
+    res = 0
+    nb = int(nb)
+    nb2 = int(nb2)
+    NbOccurence = dieList.count(int(nb))
+    NbOccurence2 = dieList.count(int(nb2))
+    if NbOccurence == 3 and NbOccurence2 == 2:
+        res = 1
+    else:
+        if (NbOccurence > 3):
+            NbOccurence = 3
+        if (NbOccurence2 > 2):
+            NbOccurence2 = 2
+        pair = factorial(5 - NbOccurence - NbOccurence2) / (factorial(3 - NbOccurence2) * factorial((5 - NbOccurence2 - NbOccurence) - (3 - NbOccurence)))
+        brelan = factorial(2 - NbOccurence2) / (factorial(2 - NbOccurence2) * factorial((2 - NbOccurence2) - (2 - NbOccurence2)))
+        res = (pair * brelan) / 6**(5 - NbOccurence - NbOccurence2)
+    return res
+
+def finder(num):
+    i = 0
+    ret = 0
+    while (i < 5):
+        if (dieList[i] == num):
+            ret += 1
+        i += 1
+    if (ret > 1):
+        ret = 1
+    return (ret)
+
+def calcStraight(nb):
+    res = 0
+    if (int(nb) == 6):
+        NbOccurence = finder(2) + finder(3) + finder(4) + finder(5) + finder(6)
+    else:
+        NbOccurence = finder(1) + finder(2) + finder(3) + finder(4) + finder(5)
+    if NbOccurence == 5:
+        res = 1
+    else:
+        res = factorial(5 - NbOccurence) / 6**(5 - NbOccurence)
+    return res
+
+def dispResult(str, nb,  res):
+    print("chances to get a " + nb + " " + str + ": %0.2f%%" % (res * 100))
+
+def pair(nb_comb):
+    dispResult("pair", nb_comb, calcProbabilite(2, nb_comb))
+    exit(0)
+
+def three(nb_comb):
+    dispResult("three-of-a-kind", nb_comb, calcProbabilite(3, nb_comb))
+    exit(0)
+
+def four(nb_comb):
+    dispResult("four-of-a-kind", nb_comb, calcProbabilite(4, nb_comb))
+    exit(0)
+
+def full_house(nb_comb, nb_comb2):
+    if (int(nb_comb2) > 6 or int(nb_comb2) < 1 or int(nb_comb) == int(nb_comb2)):
+        print("Error : bad number for combination !")
+        exit(84)
+    result = calcFullHouse(nb_comb, nb_comb2)
+    print("chances to get a " + nb_comb + " full of " + nb_comb2 + ": %0.2f%%" %(result * 100))
+    exit(0)
+
+def straight(nb_comb):
+    dispResult("straight", nb_comb, calcStraight(nb_comb))
+    exit(0)
+
+def yams(nb_comb):
+    dispResult("yams", nb_comb, calcProbabilite(5, nb_comb))
+    exit(0)
+
+def find_comb(parse_comb):
+    if (int(parse_comb[1]) > 6 or int(parse_comb[1]) < 1):
+        print("Error : bad number for combination !")
+        exit(84)
+    if (parse_comb[0] == "yams"):
+        yams(parse_comb[1])
+    elif (parse_comb[0] == "four"):
+        four(parse_comb[1])
+    elif (parse_comb[0] == "straight"):
+        if (int(parse_comb[1]) == 5 or int(parse_comb[1]) == 6):
+            straight(parse_comb[1])
+        else:
+            print("Error : You cannot make a straight with a number other than 5 or 6 !")
+            exit(84)
+    elif (parse_comb[0] == "full"):
+        if (len(parse_comb) < 3):
+            print("Error : Bad combination !")
+            exit(84)
+        full_house(parse_comb[1], parse_comb[2])
+    elif (parse_comb[0] == "pair"):
+        pair(parse_comb[1])
+    elif (parse_comb[0] == "three"):
+        three(parse_comb[1])
+    else:
+        print("Error : Unknown combination !")
+        exit(84)
+
+if (len(sys.argv) != 7):
+    if (len(sys.argv) == 2 and sys.argv[1] == "-h"):
+        print("USAGE\n\t./201yams d1 d2 d3 d4 d5 c\n\nDESCRIPTION\n\td1\tvalue of the first die (0 if not thrown)\n\td2\tvalue of the second die (0 if not thrown)\n\td3\tvalue of the third die (0 if not thrown)\n\td4\tvalue of the fourth die (0 if not thrown)\n\td5\tvalue of the fifth die (0 if not thrown)\n\tc\texpected combination")
+    else:
+        print ("Error: not the right number of argument")
+    exit(84)
+else:
+    try:
+        d1 = int(sys.argv[1])
+        d2 = int(sys.argv[2])
+        d3 = int(sys.argv[3])
+        d4 = int(sys.argv[4])
+        d5 = int(sys.argv[5])
+        if (d1 >= 0 and d1 <= 6 and d2 >= 0 and d2 <= 6 and d3 >= 0 and d3 <= 6 and d4 >= 0 and d4 <= 6 and d5 >= 0 and d5 <= 6):
+            dieList.append(d1)
+            dieList.append(d2)
+            dieList.append(d3)
+            dieList.append(d4)
+            dieList.append(d5)
+        else:
+            print("Error your die(s) value(s) are incorrect !")
+            exit(84)
+        combination = sys.argv[6]
+        parse_comb = []
+        parse_comb = combination.split('_')
+        if (len(parse_comb) < 2):
+            print("Error : Bad combination !")
+            exit(84)
+        find_comb(parse_comb)
+    except ValueError:
+        print ("Error : Not the right type of parameter !")
+        exit(84)
