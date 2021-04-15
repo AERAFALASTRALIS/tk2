@@ -1,20 +1,20 @@
 /*
 ** EPITECH PROJECT, 2021
-** objdump
+** nm
 ** File description:
-** objdump
+** nm
 */
 
-#include "mybis.h"
+#include "my.h"
 
-void print_error(char *src, char *str)
+void print_error()
 {
-    printf("my_objdump: '%s'%s", str, src);
+    fprintf(stderr, "my_nm: 'a.out': No such file\n");
 }
 
 void print_err(char *src, char *str)
 {
-    printf("my_objdump: %s%s",str, src);
+    fprintf(stderr, "my_nm: %s%s",str, src);
 }
 
 int file_type(int fd)
@@ -32,7 +32,7 @@ int file_type(int fd)
         shstrtab = ((unsigned char *)(buf + shdr[elf->e_shstrndx].sh_offset));
         for (int i = 0; i < elf->e_shnum; i++) {
             if (shdr[i].sh_type == SHT_SYMTAB)
-                printf("Symbol table found = |%d|\n", shdr[i].sh_type);
+                return (0);  
         }
         munmap(buf, s.st_size);
     } else
@@ -46,19 +46,19 @@ int main(int ac, char **av)
     ElfW(Ehdr) header;
     if (fd != -1) {
         read(fd, &header, sizeof(header));
-        if (header.e_ident[1] == 'E' && header.e_ident[2] == 'L' &&\
+        if (header.e_ident[1] == 'E' && header.e_ident[2] == 'L' &&     \
             header.e_ident[3] == 'F') {
             if (file_type(fd) == 84) {
-                print_err(": File format not recognized\n", av[1]);
+                print_err(": file format not recognized\n", av[1]);
                 return (84);
             }
         } else {
-            print_err(": File format not recognized\n", av[1]);
+            print_err(": file format not recognized\n", av[1]);
             return (84);
         }
         close(fd);
     } else {
-        print_error(": No such file\n", av[1]);
+        print_error();
         return (84);
     }
     return (0);

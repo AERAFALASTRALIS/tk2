@@ -1,20 +1,20 @@
 /*
 ** EPITECH PROJECT, 2021
-** nm
+** objdump
 ** File description:
-** nm
+** objdump
 */
 
-#include "my.h"
+#include "mybis.h"
 
 void print_error(char *src, char *str)
 {
-    printf("my_nm: '%s'%s", "a.out", src);
+    fprintf(stderr, "my_objdump: 'a.out'%s", src);
 }
 
 void print_err(char *src, char *str)
 {
-    printf("my_nm: %s%s",str, src);
+    fprintf(stderr, "my_objdump: %s%s",str, src);
 }
 
 int file_type(int fd)
@@ -32,7 +32,7 @@ int file_type(int fd)
         shstrtab = ((unsigned char *)(buf + shdr[elf->e_shstrndx].sh_offset));
         for (int i = 0; i < elf->e_shnum; i++) {
             if (shdr[i].sh_type == SHT_SYMTAB)
-                return (0);  
+                fprintf(stderr, "Symbol table found = |%d|\n", shdr[i].sh_type);
         }
         munmap(buf, s.st_size);
     } else
@@ -46,7 +46,7 @@ int main(int ac, char **av)
     ElfW(Ehdr) header;
     if (fd != -1) {
         read(fd, &header, sizeof(header));
-        if (header.e_ident[1] == 'E' && header.e_ident[2] == 'L' &&     \
+        if (header.e_ident[1] == 'E' && header.e_ident[2] == 'L' &&\
             header.e_ident[3] == 'F') {
             if (file_type(fd) == 84) {
                 print_err(": file format not recognized\n", av[1]);
