@@ -15,57 +15,29 @@ void help(void)
 int doTheHog(int period)
 {
     hog homies(period);
-    // double tmp = 0;
     std::string str;
-    for (int i = 0; str.compare("STOP"); i++){
-        std::cin >> str;
-        // if std::stof(str) fail:
-        // exemple - stof("aze")
-        // error catched
-        try{
-            // if crtl+D pressed exit
-            if (std::cin.eof())
-                break;
-            homies.fillTempV2(std::stof(str));
-            
+    char *p;
+    double aze = 0;
 
-            if (homies.geV2Sisze() > period){
-                homies.DoMeG();
-                homies.DoMeR();
-                // homies.removeFront();
-            }
-            if (homies.geV2Sisze() >= period){
-                homies.DoMeS();
-            }
-            homies.display();
+    for (int i = 0; 42; i++){
+        std::getline(std::cin, str);
+        if (!str.compare("STOP"))
+            break;
+        aze = strtod(str.data(), &p);
+        if (std::cin.eof() || str.empty() || *p)
+            return 84;
+        homies.fillTempV2(aze);
 
-
-            // if (i <= (period - 1)){
-            //     homies.addtmp(tmp);
-            // }
-            // if (i && i <= period)
-            //     homies.addlistcalcul(tmp);
-            
-            
-            // // We wait for the period argument
-            // if (i > (period - 1)){
-            //     if (i > period){
-            //         homies.addtmp(homies.getLast());
-            //         homies.addlistcalcul(tmp);
-            //     }
-            //     g = homies.DoMeG();
-            //     r = homies.DoMeR();
-            //     s = homies.DoMeS();
-            //     homies.removeFront();
-            // }
-            // std::cout << "g=" << (g ? std::to_string(g) : "nan") << '\t';
-            
+        if (homies.geV2Sisze() > period){
+            homies.DoMeG();
+            homies.DoMeR();
         }
-        catch(const std::invalid_argument& e)
-        {
-            // Error catched
-        }  
-    }
+        if (homies.geV2Sisze() >= period)
+            homies.DoMeS();
+        homies.display();
+
+    if (homies.geV2Sisze() < period)
+        return 84;
     // The programm will print abnormal temp before exiting
     homies.printWeird();
     return 0;

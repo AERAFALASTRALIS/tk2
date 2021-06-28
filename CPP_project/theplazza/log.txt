@@ -1,0 +1,22 @@
+[Plazza Log File]
+Initalisation...
+User[Input]: fantasia XXL x1
+Cook[Henrietta]: is ready to work
+Cook[Razmo]: is ready to work
+Cook[Larando]: is ready to work
+User[Input]: fantsasia XXL x1
+User[Input]: fantasia XXL x1
+Cook[Luigi]: is ready to work
+Cook[Mario]: is ready to work
+Cook[Razmo]: is ready to work
+Kitchen[NinjaFrench]: received an order
+Kitchen[NinjaFrench]: received an order
+Kitchen[NinjaFrench]: received an order
+Cook[Luigi]: has done Fantasia XXL
+Cook[Mario]: has done Fantasia XXL
+Cook[Razmo]: has done Fantasia XXL
+Kitchen[NinjaFrench]: closed
+User[Input]: exit
+Kitchen[NinjaFrench]: closed
+User[Input]: 
+User[Input]: 

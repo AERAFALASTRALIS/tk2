@@ -7,6 +7,7 @@
 
 
 SRC	=	src/main.cpp	\
+		class/hog.cpp	\
 
 BINARY	=	groundhog
 
@@ -18,5 +19,6 @@ clean:
 
 fclean: clean
 	rm -rf $(NAME)
+	rm -rf $(BINARY)
 
 re:	fclean

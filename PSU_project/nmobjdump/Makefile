@@ -32,7 +32,7 @@ $(NAMENM):
 	gcc $(SRCNM) -o $(NAMENM)
 
 $(NAMEOBJ):
-	gcc $(SRCOBJ) -o $(NAMEOBJ)
+	gcc $(SRCOBJ) -o $(NAMEOBJ) -lm
 
 $(NM):	$(CC) $(SRCNM) -o $(NAMENM)
 
