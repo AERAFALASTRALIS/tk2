@@ -28,16 +28,14 @@ int get_flag64(char *data, Elf64_Ehdr *elf)
 
     for (int i = 0; i < elf->e_shnum; i++) {
         section = (void *)data + (elf->e_shoff + elf->e_shentsize * i);
-        flags |=
-            HAS_RELOC * (elf->e_type == ET_REL &&
-                         (section->sh_type == SHT_RELA ||
-                          section->sh_type == SHT_REL)) |
+        flags |= HAS_RELOC * (elf->e_type == ET_REL &&
+                              (section->sh_type == SHT_RELA ||
+                               section->sh_type == SHT_REL)) |
             EXEC_P * (elf->e_type == ET_EXEC) |
             HAS_SYMS * (section->sh_type == SHT_SYMTAB ||
                         section->sh_type == SHT_DYNSYM) |
             DYNAMIC * (elf->e_type == ET_DYN) |
-            D_PAGED * (elf->e_type == ET_EXEC ||
-                       elf->e_type == ET_DYN);
+            D_PAGED * (elf->e_type == ET_EXEC || elf->e_type == ET_DYN);
     }
     return (flags);
 }
@@ -70,13 +68,12 @@ void objdump64(char *data, char *file_name, Elf64_Ehdr *elf)
     for (int i = 0; i < elf->e_shnum; i++) {
         s = (void *)data + (elf->e_shoff + i * elf->e_shentsize);
         if (s->sh_size && s->sh_type != SHT_NOBITS &&
-            s->sh_type != SHT_SYMTAB &&
-            (s->sh_type != SHT_STRTAB ||
-             !strcmp(cmp + s->sh_name, ".dynstr")) &&
-            ((s->sh_flags & SHF_ALLOC) ||
-             (s->sh_type != SHT_RELA && s->sh_type != SHT_REL)))
-            print_s(data + s->sh_offset, s->sh_size,
-                    s->sh_addr, cmp + s->sh_name);
+            s->sh_type != SHT_SYMTAB && (s->sh_type != SHT_STRTAB ||
+            !strcmp(cmp + s->sh_name, ".dynstr")) &&
+            ((s->sh_flags & SHF_ALLOC) || (s->sh_type != SHT_RELA &&
+                                           s->sh_type != SHT_REL)))
+            print_s(data + s->sh_offset, s->sh_size, s->sh_addr,
+                    cmp + s->sh_name);
     }
 }
 

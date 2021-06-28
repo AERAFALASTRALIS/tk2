@@ -1,12 +1,12 @@
 /*
 ** EPITECH PROJECT, 2021
-** flags
+** flag
 ** File description:
-** flags
+** flag
 */
 
-#ifndef __BFD_H_SEEN__
-#define __BFD_H_SEEN__
+#ifndef _BFD_H_SEEN_
+#define _BFD_H_SEEN_
 
 #define BFD_NO_FLAGS    0x00
 

@@ -11,7 +11,7 @@ void parse_64(Elf64_Shdr *section, Elf64_Ehdr *elf, char *data)
 {
     Elf64_Sym *symbol = (void *)data + section->sh_offset;
     t_symbols *sym = malloc(sizeof(t_symbols) *
-                     (section->sh_size / sizeof(Elf64_Sym)));
+                            (section->sh_size / sizeof(Elf64_Sym)));
     int i;
     int k = 0;
 

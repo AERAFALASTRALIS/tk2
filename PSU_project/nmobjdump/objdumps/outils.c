@@ -32,27 +32,25 @@ char *check_error(char *file_name)
     return (result);
 }
 
-void print_s(char *section, size_t size, size_t line, char *section_nam)
+void print_s(char *section, size_t s, size_t l, char *section_nam)
 {
     char *buf;
-    size_t min;
+    size_t m;
     printf("Contens of section %s \n", section_nam);
-    for (int i = 0; size; i++) {
-        min = MIN(size, 16);
-        printf(" %0*lx",
-               MAX((unsigned int)(log(size + line) / log(8)), 4), line);
+    for (int i = 0; s; i++) {
+        m = MIN(s, 16);
+        printf(" %0*lx",MAX((unsigned int)(log(s + l) / log(8)), 4), l);
         buf = section + 16 * i;
-        line += 16;
-        for (int k = 0; k < min; k++)
+        l += 16;
+        for (int k = 0; k < m; k++)
             printf("%s%02x", (k % 4) ? "" : " ", buf[k]);
-        for (int k = 0; k + min * 2.25 - 5 + (!(min / 4) ||
-                                              min % 4) < 32; k++)
+        for (int k = 0; k + m * 2.25 -5 + (!(m / 4) || m % 4) < 32; k++)
             printf(" ");
         for (int k = 0; k < 16; k++)
             printf("%c",
-                   k < min ? (!isprint(buf[k]) ? '.' : buf[k]) : ' ');
+                   k < m ? (!isprint(buf[k]) ? '.' : buf[k]) : ' ');
         printf("\n");
-        size -= min;
+        s -= m;
     }
 }
 
@@ -77,7 +75,7 @@ void parse_archive(char *data, char *file_name)
     while ((char *)ar_h - data < st.st_size) {
         if (strchr(ar_h->ar_name, '/')[1] == ' ')
             name = strndup(ar_h->ar_name,
-            strchr(ar_h->ar_name, '/') - ar_h->ar_name);
+                           strchr(ar_h->ar_name, '/') - ar_h->ar_name);
         else {
             char *tmp = buf_name + atoi(strchr(ar_h->ar_name, '/') + 1);
             name = strndup(tmp, strchr(tmp, '/') - tmp);

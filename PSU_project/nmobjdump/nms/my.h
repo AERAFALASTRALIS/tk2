@@ -48,9 +48,8 @@ void print_symbol(t_symbols *sym, int size);
 void pushswap(t_symbols *sym, int size);
 char get64type(Elf64_Ehdr *elf, Elf64_Shdr *section, Elf64_Sym *sym);
 char get32type(Elf32_Ehdr *elf, Elf32_Shdr *section, Elf32_Sym *sym);
-void asigne_sym(t_symbols *sym, Elf32_Ehdr *elf,
-                Elf32_Shdr *section, Elf32_Sym *symbol);
-void asigne_sym64(t_symbols *sym, Elf64_Ehdr *elf,
-                  Elf64_Shdr *section, Elf64_Sym *symbol);
+void asigne_sym(t_symbols *, Elf32_Ehdr *, Elf32_Shdr *, Elf32_Sym *);
+void asigne_sym64(t_symbols *, Elf64_Ehdr *, Elf64_Shdr *, Elf64_Sym *);
 void atribu(char *data, struct ar_hdr **ar_h, char **buf_name);
+
 #endif /* !MY_H_ */
